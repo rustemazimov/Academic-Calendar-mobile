@@ -27,7 +27,7 @@
             android:id="@+id/fileNameTextView"
             android:layout_width="match_parent"
             android:layout_height="33dp"
-            android:text="TextView"
+            android:text="New file*"
             android:textAlignment="center" />
 
         <CalendarView

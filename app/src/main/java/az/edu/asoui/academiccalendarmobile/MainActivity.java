@@ -1,8 +1,10 @@
 package az.edu.asoui.academiccalendarmobile;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,7 +17,7 @@ import android.view.MenuItem;
 import android.widget.CalendarView;
 
 public class MainActivity extends AppCompatActivity {
-
+    private final String TAG = "MainActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,10 +26,12 @@ public class MainActivity extends AppCompatActivity {
         final CalendarView calendarView = (CalendarView) findViewById(R.id.calendarView);
 
         calendarView.setClickable(true);
-        calendarView.setOnClickListener(new View.OnClickListener() {
+
+        //Handle action when user click a day in calendar
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onClick(View v) {
-                
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                Log.d(TAG, "date changed");
             }
         });
 
