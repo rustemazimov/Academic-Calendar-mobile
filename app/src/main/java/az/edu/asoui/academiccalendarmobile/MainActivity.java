@@ -1,5 +1,6 @@
 package az.edu.asoui.academiccalendarmobile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -32,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 Log.d(TAG, "date changed");
+
+                Intent intent = new Intent(MainActivity.this, EventsActivity.class);
+                intent.putExtra("date", dayOfMonth + "-" + month + "-" + year);
+                startActivity(intent);
             }
         });
 
