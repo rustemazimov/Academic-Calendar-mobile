@@ -1,22 +1,17 @@
 package az.edu.asoui.academiccalendarmobile;
 
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.PopupMenu;
-import android.util.Log;
+import android.view.ContextMenu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.ResourceCursorAdapter;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import models.EventList;
@@ -44,31 +39,7 @@ public class EventsActivity extends AppCompatActivity {
             }
         });
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                PopupMenu menu = new PopupMenu(EventsActivity.this, listView);
-                menu.getMenuInflater().inflate(R.menu.menu_list_view, menu.getMenu());
-
-                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getTitle().equals("Delete"))
-                        {
-                            EventList.getInstance().delete(position);
-                            return true;
-                        }
-                        if (item.getTitle().equals("Edit"))
-                        {
-                            openEventDetails(position);
-                        }
-                        return true;
-                    }
-                });
-                menu.show();
-                return true;
-            }
-        });
+        registerForContextMenu(listView);
 
         ((Button) findViewById(R.id.addEventButton)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,28 +56,33 @@ public class EventsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
 
-        /*((Button) findViewById(R.id.addEventButton)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(EventsActivity.this, EventDetailsActivity.class);
-                intent.putExtra("eventIndex", -1);
-                startActivity(intent);
-            }
-        });*/
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(0, v.getId(), 0, "Edit");
+        menu.add(0, v.getId(), 0, "Delete");
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        if (item.getTitle().equals("Edit"))
+        {
+            openEventDetails(info.position);
+        }
+        else if (item.getTitle().equals("Delete"))
+        {
+            EventList.getInstance().delete(info.position);
+        }
+        return true;
     }
 
     private void openEventDetails(int eventIndex){
         Intent intent = new Intent(getApplicationContext(), EventDetailsActivity.class);
         intent.putExtra("eventIndex", eventIndex);
-        /*if (!isCameFromMainActivityAlready)
-        {
-            intent.putExtra("date1", getIntent().getExtras().getString("date"));
-        }
-        else
-        {
-            intent.putExtra("date1", getIntent().getExtras().getString("date"));
-        }*/
         intent.putExtra("date", getIntent().getExtras().getString("date"));
         startActivity(intent);
     }
