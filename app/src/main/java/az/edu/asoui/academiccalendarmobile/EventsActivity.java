@@ -8,12 +8,14 @@ import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import models.Event;
 import models.EventList;
 
 /**
@@ -22,12 +24,23 @@ import models.EventList;
 
 public class EventsActivity extends AppCompatActivity {
     private final String TAG = "EventsActivity";
+    private ArrayAdapter<Event> dayEvents;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
         final ListView listView = (ListView) findViewById(R.id.eventsListView);
-        listView.setAdapter(EventList.findInstance(getApplicationContext(), R.layout.text_view).getList());
+        dayEvents = new ArrayAdapter<Event>(getApplicationContext(), R.layout.text_view);
+
+        for (int i = 0; i < EventList.getInstance().size(); i++) {
+            Event event = EventList.getInstance().get(i);
+            if (event.getDate().equals(getIntent().getExtras().getString("date")))
+            {
+                dayEvents.add(event);
+            }
+        }
+        listView.setAdapter(dayEvents);
         listView.setClickable(true);
         listView.setSelected(true);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -73,6 +86,7 @@ public class EventsActivity extends AppCompatActivity {
         }
         else if (item.getTitle().equals("Delete"))
         {
+            dayEvents.remove(EventList.getInstance().get(info.position));
             EventList.getInstance().delete(info.position);
         }
         return true;

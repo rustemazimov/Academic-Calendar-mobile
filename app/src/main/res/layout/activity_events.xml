@@ -8,8 +8,10 @@
     <ImageButton
         android:id="@+id/logoImageButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:srcCompat="@mipmap/ic_launcher" />
+        android:layout_height="49dp"
+        android:scaleType="fitCenter"
+        android:background="@null"
+        app:srcCompat="@mipmap/logo_icon" />
 
     <TextView
         android:id="@+id/textView3"
