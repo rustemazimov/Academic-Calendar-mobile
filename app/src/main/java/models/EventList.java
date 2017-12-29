@@ -68,4 +68,8 @@ public class EventList {
         return this.list.getPosition(event);
     }
 
+    public void delete(int index){
+        this.list.remove(this.list.getItem(index));
+    }
+
 }

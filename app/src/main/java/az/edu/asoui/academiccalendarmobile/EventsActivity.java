@@ -6,7 +6,9 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -39,6 +41,32 @@ public class EventsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 openEventDetails(position);
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                PopupMenu menu = new PopupMenu(EventsActivity.this, listView);
+                menu.getMenuInflater().inflate(R.menu.menu_list_view, menu.getMenu());
+
+                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getTitle().equals("Delete"))
+                        {
+                            EventList.getInstance().delete(position);
+                            return true;
+                        }
+                        if (item.getTitle().equals("Edit"))
+                        {
+                            openEventDetails(position);
+                        }
+                        return true;
+                    }
+                });
+                menu.show();
+                return true;
             }
         });
 
