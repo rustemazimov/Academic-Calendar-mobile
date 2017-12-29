@@ -35,11 +35,10 @@ public class EventsActivity extends AppCompatActivity {
         listView.setAdapter(EventList.findInstance(getApplicationContext(), R.layout.text_view).getList());
         listView.setClickable(true);
         listView.setSelected(true);
-        listView.setOnTouchListener(new View.OnTouchListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                Toast.makeText(getApplicationContext(), "Item: " + (String) listView.getSelectedItem(), Toast.LENGTH_LONG).show();
-                return false;
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                openEventDetails(position);
             }
         });
 
