@@ -22,12 +22,10 @@ import models.EventList;
 
 public class EventsActivity extends AppCompatActivity {
     private final String TAG = "EventsActivity";
-    private boolean isCameFromMainActivityAlready = false;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
-        isCameFromMainActivityAlready = true;
         final ListView listView = (ListView) findViewById(R.id.eventsListView);
         listView.setAdapter(EventList.findInstance(getApplicationContext(), R.layout.text_view).getList());
         listView.setClickable(true);
