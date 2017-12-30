@@ -76,6 +76,22 @@ public class EventList {
         this.list.remove(index);
     }
 
+    public boolean delete(Event event){
+        return list.remove(event);
+    }
+
     public int size() { return list.size(); }
 
+    public void deleteDay(String date) {
+        for (Event event : list) {
+            if (event.getDate().equals(date))
+            {
+                list.remove(event);
+            }
+        }
+    }
+
+    public int indexOf(Event event) {
+        return list.indexOf(event);
+    }
 }

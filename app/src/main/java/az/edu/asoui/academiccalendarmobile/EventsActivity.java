@@ -25,12 +25,13 @@ import models.EventList;
 public class EventsActivity extends AppCompatActivity {
     private final String TAG = "EventsActivity";
     private ArrayAdapter<Event> dayEvents;
+    private ListView listView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
-        final ListView listView = (ListView) findViewById(R.id.eventsListView);
+        listView = (ListView) findViewById(R.id.eventsListView);
         dayEvents = new ArrayAdapter<Event>(getApplicationContext(), R.layout.text_view);
 
         for (int i = 0; i < EventList.getInstance().size(); i++) {
@@ -80,14 +81,15 @@ public class EventsActivity extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Event event = (Event) listView.getAdapter().getItem(info.position);
         if (item.getTitle().equals("Edit"))
         {
-            openEventDetails(info.position);
+            openEventDetails(EventList.getInstance().indexOf(event));
         }
         else if (item.getTitle().equals("Delete"))
         {
-            dayEvents.remove(EventList.getInstance().get(info.position));
-            EventList.getInstance().delete(info.position);
+            dayEvents.remove(event);
+            EventList.getInstance().delete(event);
         }
         return true;
     }
